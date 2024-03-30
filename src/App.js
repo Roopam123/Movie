@@ -1,17 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect} from "react";
 import { fetchDataFromApi } from "./utils/api";
+import { useDispatch, useSelector } from "react-redux";
+import { getApiConfigartion, getGenres } from "../src/store/homeSlice.js";
+import Home from "./pages/home/Home.jsx";
 
 function App() {
-  const [data, setData] = useState("");
-  
+
   useEffect(() => {
     apiTesting();
-  }, []);
+  },[]);
 
+  // useDispech used for the add data in a store
+  const dispatch = useDispatch();
+  // useSeletor is used for the get data from the store
+  const url = useSelector((state) => state?.home?.url);
   const apiTesting = () => {
     fetchDataFromApi("/movie/popular")
       .then((res) => {
-        setData(res);
+        // add data in a store
+        dispatch(getApiConfigartion(res));
+        dispatch(getGenres(res));
       })
       .catch((error) => {
         console.log("error on the api testing", error);
@@ -19,8 +27,7 @@ function App() {
   };
   return (
     <div>
-      <h1>Hello</h1>
-      {console.log(data.results)}
+      <Home/>
     </div>
   );
 }
