@@ -2,7 +2,13 @@ import React, {useEffect} from "react";
 import { fetchDataFromApi } from "./utils/api";
 import { useDispatch, useSelector } from "react-redux";
 import { getApiConfigartion, getGenres } from "../src/store/homeSlice.js";
+import {BrowserRouter,Route,Routes} from 'react-router-dom'
+// components
 import Home from "./pages/home/Home.jsx";
+import PageNotFound from "./pages/404/PageNotFound.jsx";
+import Details from "./pages/details/Details.jsx";
+import Explore from "./pages/explore/Explore.jsx";
+import SearchResuls from "./pages/searchResults/SearchResuls.jsx";
 
 function App() {
 
@@ -26,9 +32,15 @@ function App() {
       });
   };
   return (
-    <div>
-      <Home/>
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home/>}/>
+      <Route path="/:mediaType/:id" element={<Details/>}/>
+      <Route path="/search/:id" element={<SearchResuls/>}/>
+      <Route path="/explore/:mediaType" element={<Explore/>}/>
+      <Route path="*" element={<PageNotFound/>}/>
+    </Routes>
+    </BrowserRouter>
   );
 }
 
